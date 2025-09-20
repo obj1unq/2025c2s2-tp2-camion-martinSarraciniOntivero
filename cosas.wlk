@@ -6,7 +6,7 @@ object knightRider {
 }
 
 object arenaAGranel{
-	var property peso = 0 
+	var property peso = 9
 	var property nivelPeligrosidad = 1
 	method peso() { return peso }
 	method nivelPeligrosidad() { return 1 }
