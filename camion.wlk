@@ -1,7 +1,7 @@
 import cosas.*
 
 object camion {
-	const property cosas = #{arenaAGranel, bumblebee}
+	const property cosas = #{}
 	method pesoTara(){ return 1000 }
 	method cosas() { return cosas }
 	method cargar(unaCosa) {
@@ -22,9 +22,7 @@ object camion {
 			throw "La cosa ++unaCosa++ no está cargada"
 		}
 	}
-	/*method sonPesoParEn(carga){
-		carga.filter({carga => carga.peso() % 2 == 0})
-	}*/
+
 	method todoPesoParEn(carga) {
     return carga.all({cosa => cosa.peso() % 2 == 0})
 	}
@@ -40,7 +38,7 @@ object camion {
 		return self.pesoTotal() > 2500
 	}
 	method tieneCargaConPeligrosidad(nivel){
-		return cosas.any({cosa => cosa.nivelPeligrosidad() == nivel})
+		return cosas.filter({cosa => cosa.nivelPeligrosidad() == nivel})
 	}
 	method cosasMasPeligrosasQue(nivel){
 		return cosas.filter({cosa => cosa.nivelPeligrosidad() > nivel})
@@ -48,6 +46,20 @@ object camion {
 	method cosasMasPeligrosasQueOtraCosa(unaCosa){
 		return self.cosasMasPeligrosasQue(unaCosa.nivelPeligrosidad())
 	}
-	
-}
+	method hayCosasMasPeligrosasQue(nivel){
+		return cosas.any({cosa => cosa.nivelPeligrosidad() > nivel})
+	}
+	method puedeCircularEnRutaNivel(nivel){
+		return not self.excesoDePeso() and not self.hayCosasMasPeligrosasQue(nivel)
+	}
+	method tieneAlgunaCargaEntre( min, max){
+		return cosas.any({cosa => cosa.peso() >= min and cosa.peso() <= max})
+	}
+	method cosaMasPesada(){
+		return cosas.max({cosa => cosa.peso()})
+	}
+	method pesosDeCargas(){
+		return cosas.map({cosa => cosa.peso()})
+	}
 
+}
