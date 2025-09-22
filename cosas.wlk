@@ -3,7 +3,10 @@ object knightRider {
 	var property nivelPeligrosidad = 10
 	method peso() { return peso }
 	method nivelPeligrosidad() { return nivelPeligrosidad }
-	method pesoA(kilos){   peso = kilos }
+	method bulto() { return 1 }
+	method accidente(){
+		
+	}
 }
 
 object arenaAGranel{
@@ -11,7 +14,10 @@ object arenaAGranel{
 	var property nivelPeligrosidad = 1
 	method peso() { return peso }
 	method nivelPeligrosidad() { return 1 }
-	method pesoA(kilos){   peso = kilos }
+	method bulto() { return 1 }
+	method accidente(){
+		 peso += 20
+	}
 }
 
 object bumblebee{
@@ -25,6 +31,17 @@ object bumblebee{
 		}
 	}
 	method seTransforma(siono){ estaTransformadoRobot = siono }
+	method bulto() { return 2 }
+	method accidente(){
+		 self.seTransforma(self.transformacionContraria())
+	}
+	method transformacionContraria(){
+	return if(estaTransformadoRobot == true){
+			false
+		}else{
+			true
+		} //no estoy seguro de hacerlo asi
+	}
 }
 
 object paqueteLadrillos{
@@ -34,6 +51,22 @@ object paqueteLadrillos{
 	method peso() { return peso * cantidadLadrillos }
 	method nivelPeligrosidad() { return nivelPeligrosidad }
 	method cantidadLadrillosA(cantidad){ cantidadLadrillos = cantidad }
+	method bulto() { 
+		return if(cantidadLadrillos <= 100){
+		 			1
+		}else if(cantidadLadrillos > 100 and cantidadLadrillos <= 300){
+			 2
+		}else{
+			 3
+		}
+	}
+	method accidente(){
+		 if(cantidadLadrillos >= 12){
+		 	cantidadLadrillos -= 12
+		 }else{
+		 	cantidadLadrillos = 0
+		 }
+	}
 }
 
 object bateriaAntiaerea{
@@ -53,13 +86,26 @@ object bateriaAntiaerea{
 			0
 		}
 	}
+	method bulto() {  
+		return if(misiles){
+			2
+		}else{
+			1
+		}
+	}
+	method accidente(){
+		misiles = false
+	}
 }
 
 object residuosRadiactivos{
 	var property peso = 100
-	method pesoA(kilos){ peso = kilos }
 	method peso() { return peso }
 	method nivelPeligrosidad() { return 200 }
+	method bulto() { return 1 }
+	method accidente(){
+		 peso += 15
+	}
 }
 
 object contenedorPortuario{
@@ -74,6 +120,16 @@ object contenedorPortuario{
 	}
 	method cargar(unaCosa){ return contenido.add(unaCosa) }
 	method descargar(unaCosa){ return contenido.remove(unaCosa) }
+	method bulto(){
+		return if(contenido.isEmpty()){
+			1
+		}else{
+			1 + contenido.sum({objeto => objeto.bulto()}) 
+		}
+	}
+	method accidente(){
+		contenido.forEach({cosa => cosa.accidente()})
+	}
 }
 
 object embalaje{
@@ -81,4 +137,8 @@ object embalaje{
 	method embalar(unaCosa){ embalado = unaCosa }
 	method peso(){ return  embalado.peso()}
 	method nivelPeligrosidad(){ return embalado.nivelPeligrosidad() / 2 }
+	method bulto() { return 2 }
+	method accidente(){
+
+	}
 }

@@ -14,12 +14,12 @@ object camion {
 	}
 	method validarCarga(unaCosa){
 		if(cosas.contains(unaCosa)){
-			throw "La cosa ++unaCosa++ ya está cargada"
+			self.error("La cosa ++unaCosa++ ya está cargada")
 		}
 	}
 	method validarDescarga(unaCosa){
 		if(not cosas.contains(unaCosa)){
-			throw "La cosa ++unaCosa++ no está cargada"
+			self.error("La cosa ++unaCosa++ no está cargada")
 		}
 	}
 
@@ -61,5 +61,50 @@ object camion {
 	method pesosDeCargas(){
 		return cosas.map({cosa => cosa.peso()})
 	}
-
+	method cantidadDeBultos(){
+		return cosas.sum({cosa => cosa.bulto()})
+	}
+	method accidente(){
+		cosas.forEach({cosa => cosa.accidente()})
+	}
+	method transportar (destino,camino){
+		camino.puedeCircular()
+		destino.cargarTodo()
+	}
 }
+
+
+
+object almacen{
+	var property cosasAlmacen = #{}
+	method cargarTodo(){
+		camion.cosas().forEach({elemento => self.cargar(elemento)})
+		camion.cosas().clear()
+	}
+	method cargar(unaCosa){
+		self.validarCarga(unaCosa)
+		cosasAlmacen.add(unaCosa)
+	}
+	method validarCarga(unaCosa){
+		if(cosasAlmacen.contains(unaCosa)){
+			self.error("La cosa ++unaCosa++ ya está cargada")
+		}
+	}
+}
+
+object ruta9{
+	method puedeCircular(){
+		if(camion.cosasMasPeligrosasQue(20).size()>0 || camion.excesoDePeso()){
+			self.error("no se puede realizar el viaje porque hay cosas muy peligrosas o exceso de peso")
+		}
+	}
+}
+
+object caminosVecinales{
+	var property pesoMaximo = 0
+	method puedeCircular(){
+		if (camion.pesoTotal() > pesoMaximo){
+			self.error("No puede realizarse el viaje por caminos vecinales por exceso de peso")
+		}
+	}
+} 
