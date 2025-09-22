@@ -50,7 +50,6 @@ object paqueteLadrillos{
 	var property nivelPeligrosidad = 5
 	method peso() { return peso * cantidadLadrillos }
 	method nivelPeligrosidad() { return nivelPeligrosidad }
-	method cantidadLadrillosA(cantidad){ cantidadLadrillos = cantidad }
 	method bulto() { 
 		return if(cantidadLadrillos <= 100){
 		 			1
@@ -70,8 +69,7 @@ object paqueteLadrillos{
 }
 
 object bateriaAntiaerea{
-	var misiles = false
-	method activarMisiles(siono){ misiles = siono }
+	var property misiles = false
 	method peso() { 
 		return if(misiles){
 			300
